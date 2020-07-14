@@ -5,8 +5,11 @@ import covid from '../api/covid';
 
 
 export default () => {
+
+    const [worldInformation, setWorldInformation] = useState([]);
     const [resultsWorld, setResultWorld] = useState([]);
     const [resultsCountry, setResultCountry] = useState([]);
+    const teste = "";
 
 
     const formatadorData = (data) => {
@@ -29,26 +32,38 @@ export default () => {
         return anoF + "-" + mesF + "-" + diaF;
     }
 
-    const searchByCountrys = async (country, pais) => {
+    const searchByCountrys = async (country, pais, status) => {
         const date = new Date();
-        const response = await covid(`/country/${country}/status/confirmed?from=${primeiroDiaMes(date)}T00:00:00Z&to=${formatadorData(date)}T00:00:00Z`)
+        let tipoStatus = '';
+        const response = await covid(`/country/${country}/status/${status}?from=${primeiroDiaMes(date)}T00:00:00Z&to=${formatadorData(date)}T00:00:00Z`)
+        console.log(response.data);
         setResultCountry(response.data);
+
+        if (status == 'confirmed') {
+            tipoStatus = 'Confirmados';
+        } else if (status == 'recovered') {
+            tipoStatus = 'Recuperados';
+        } else {
+            tipoStatus = 'Mortes';
+        }
+
         Actions.chart({
             resultsCountry: response.data,
             resultsWorld: resultsWorld,
+            status: tipoStatus,
             pais: pais
         });
     }
 
-    const statusCovidWorld = () => {
-        covid.get(`/stats`).then((values) => {
-            setResultWorld(values.data);
-        })
+    const informationByCountry = async () => {
+        const date = new Date();
+        const response = await covid(`/world?from=${primeiroDiaMes(date)}T00:00:00Z&to=${formatadorData(date)}T00:00:00Z`);
+        setWorldInformation(response.data);
     }
 
     useEffect(() => {
-        statusCovidWorld();
+        informationByCountry();
     }, []);
 
-    return [searchByCountrys];
+    return [searchByCountrys, worldInformation];
 }

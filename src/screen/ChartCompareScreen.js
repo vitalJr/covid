@@ -19,6 +19,7 @@ import {
 const ChartCompareScreen = (props) => {
 
     const result = props.navigation.state.params.result;
+    const status = props.navigation.state.params.status;
     const data = result.map(casos => casos.Cases);
     const labels = result.map(casos => casos.Country);
 
@@ -35,7 +36,7 @@ const ChartCompareScreen = (props) => {
     return (
         <View style={{ flex: 1 }}>
             <Text style={styles.textDexcription}>Gráfico mostra a compração dos casos para os países selecionados na seção anterior.</Text>
-            <Text style={styles.textDexcription}> - Comparação realizada com a data de ontem até a presente data. </Text>
+            <Text style={styles.textTopics}> - Comparação realizada com a data de ontem até a presente data. Comparação baseada no status {status} dos países selecionados. </Text>
             <ScrollView>
                 <BarChart
                     data={line}
@@ -67,7 +68,11 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         marginTop: 5
     },
-
+    textTopics: {
+        marginHorizontal: 10,
+        marginTop: 5,
+        fontWeight: 'bold'
+    },
 })
 
 export default ChartCompareScreen;

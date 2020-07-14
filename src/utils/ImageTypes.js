@@ -5,3 +5,4 @@ export const venezuela = require("../img/venezuela.jpg");
 export const argentina = require("../img/argentina.jpg");
 export const belgica = require("../img/belgica.jpg");
 export const alemanha = require("../img/alemanha.jpg");
+export const marrocos = require("../img/marrocos.jpg");

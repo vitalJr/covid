@@ -28,13 +28,14 @@ export default () => {
         return anoF + "-" + mesF + "-" + diaF;
     }
 
-    const searchResults = async (countryUm, countryDois) => {
+    const searchResults = async (countryUm, countryDois, status) => {
         const date = new Date();
 
         let result = [];
+        let tipoStatus = ''
 
-        const responseUm = await covid(`/country/${countryUm}/status/confirmed?from=${dataAnterior()}T00:00:00Z&to=${diaAtual()}T00:00:00Z`)
-        const responseDois = await covid(`/country/${countryDois}/status/confirmed?from=${dataAnterior()}T00:00:00Z&to=${diaAtual()}T00:00:00Z`)
+        const responseUm = await covid(`/country/${countryUm}/status/${status}?from=${dataAnterior()}T00:00:00Z&to=${diaAtual()}T00:00:00Z`)
+        const responseDois = await covid(`/country/${countryDois}/status/${status}?from=${dataAnterior()}T00:00:00Z&to=${diaAtual()}T00:00:00Z`)
 
         for (let i = 0; i < responseUm.data.length; i++) {
             result.push(responseUm.data[i]);
@@ -44,8 +45,17 @@ export default () => {
             result.push(responseDois.data[i]);
         }
 
+        if (status == 'confirmed') {
+            tipoStatus = 'Confirmados';
+        } else if (status == 'recovered') {
+            tipoStatus = 'Recuperados';
+        } else {
+            tipoStatus = 'Mortes';
+        }
+
         Actions.chartcomparator({
             result: result,
+            status: tipoStatus
         });
 
     }

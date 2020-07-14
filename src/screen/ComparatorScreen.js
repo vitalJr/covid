@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     Image,
     Alert,
-    Platform
+    Platform,
+    Picker
 } from 'react-native';
 
 import {
@@ -15,7 +16,8 @@ import {
     argentina,
     alemanha,
     belgica,
-    italia
+    italia,
+    marrocos
 } from '../utils/ImageTypes';
 
 import useResultsComporator from '../hooks/useResultsComparator';
@@ -26,6 +28,7 @@ const ComparatorScreen = () => {
 
     const [countryUm, setCountryUm] = useState('');
     const [countryDois, selectCountryDois] = useState('');
+    const [status, setStatus] = useState('');
 
     const [showCountryUm, setShowCountryUm] = useState('');
     const [showCountryDois, setShowCountryDois] = useState('');
@@ -38,10 +41,14 @@ const ComparatorScreen = () => {
     }
 
     const compareCountrys = () => {
-        countryUm && countryDois ?
-            searchResults(countryUm, countryDois)
+        countryUm != countryDois ?
+            status ? countryUm && countryDois ?
+                searchResults(countryUm, countryDois, status) :
+                Alert.alert("Desculpe", "Será necessário selecionar dois países para realizar a comparação.")
+                :
+                Alert.alert("Desculpe", "Será necessário selecionar o status para comparar os gráficos.")
             :
-            Alert.alert("Desculpe", "Será necessário selecionar dois países para realizar a comparação.");
+            Alert.alert("Desculpe", "Não é possível comparar o mesmo país.");
     }
 
     return (
@@ -53,8 +60,31 @@ const ComparatorScreen = () => {
                 {countryUm || countryDois ? <Text>{showCountryUm}  --  {showCountryDois}</Text> : null}
             </View>
 
+
+            <View style={{
+                borderColor: Platform.OS == 'android' ? 'black' : '',
+                borderWidth: Platform.OS == 'android' ? 1 : 0,
+                margin: 5,
+            }}>
+                <Picker
+                    selectedValue={status}
+                    style={{
+                        height: 50,
+                        width: 250,
+                        alignSelf: 'center',
+                        marginTop: Platform.OS == 'ios' ? -80 : 0
+                    }}
+                    onValueChange={(itemValue, itemIndex) => setStatus(itemValue)}
+                >
+                    <Picker.Item label="Status" value="" />
+                    <Picker.Item label="Confirmados" value="confirmed" />
+                    <Picker.Item label="Recuperados" value="recovered" />
+                    <Picker.Item label="Mortes" value="deaths" />
+                </Picker>
+            </View>
+
             <View style={{ flexDirection: 'row', flex: 1 }}>
-                <ScrollView>
+                <ScrollView style={{ marginTop: Platform.OS == 'ios' ? 50 : 0, backgroundColor: '#FFF' }}>
                     <View style={styles.containerImage}>
                         <TouchableOpacity onPress={() => selectCountry('brazil', 'um', 'Brasil')}>
                             <Image style={{
@@ -115,11 +145,21 @@ const ComparatorScreen = () => {
                                 borderWidth: countryUm == 'germany' ? 5 : 0
                             }} source={alemanha} />
                         </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => selectCountry('morocco', 'um', 'Marrocos')}>
+                            <Image style={{
+                                width: 150,
+                                height: 100,
+                                margin: 10,
+                                borderColor: countryUm == 'morocco' ? 'black' : 'black',
+                                borderWidth: countryUm == 'morocco' ? 5 : 0
+                            }} source={marrocos} />
+                        </TouchableOpacity>
                     </View>
                 </ScrollView>
 
 
-                <ScrollView>
+                <ScrollView style={{ marginTop: Platform.OS == 'ios' ? 50 : 0, backgroundColor: '#FFF' }}>
                     <View style={styles.containerImage}>
                         <TouchableOpacity onPress={() => selectCountry('brazil', 'dois', 'Brasil')}>
                             <Image style={{
@@ -179,6 +219,16 @@ const ComparatorScreen = () => {
                                 borderColor: countryDois == 'germany' ? 'black' : 'black',
                                 borderWidth: countryDois == 'germany' ? 5 : 0
                             }} source={alemanha} />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => selectCountry('morocco', 'dois', 'Marrocos')}>
+                            <Image style={{
+                                width: 150,
+                                height: 100,
+                                margin: 10,
+                                borderColor: countryDois == 'morocco' ? 'black' : 'black',
+                                borderWidth: countryDois == 'morocco' ? 5 : 0
+                            }} source={marrocos} />
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

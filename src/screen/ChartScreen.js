@@ -9,7 +9,6 @@ import {
     StackedBarChart
 } from 'react-native-chart-kit'
 
-import GlobalDates from '../component/GlobalDates';
 import useResultsIndex from '../hooks/useResultsIndex';
 
 const ChartScreen = (props) => {
@@ -17,6 +16,7 @@ const ChartScreen = (props) => {
     const resultsCountry = props.navigation.state.params.resultsCountry;
     const resultsWorld = props.navigation.state.params.resultsWorld;
     const paisSelecionado = props.navigation.state.params.pais;
+    const status = props.navigation.state.params.status;
 
     const date = new Date();
     const retornaMes = (data) => {
@@ -78,14 +78,14 @@ const ChartScreen = (props) => {
     return (
         <View style={{ flex: 1 }}>
             <Text style={styles.titleMes}>{retornaMes(date)}</Text>
-            <Text style={styles.titlePais}>{paisSelecionado}</Text>
+            <Text style={styles.titlePais}>{paisSelecionado} - gráficos de {status}</Text>
             <Text style={styles.description}>Este gráfico representa a curva viral no mês atual</Text>
 
             <ScrollView>
                 <BarChart
                     data={line}
                     width={Dimensions.get('window').width} // from react-native
-                    height={ Platform.OS == 'ios' ? Dimensions.get('window').height : 480}
+                    height={Platform.OS == 'ios' ? Dimensions.get('window').height : 480}
                     chartConfig={{
                         backgroundColor: '#f90000',
                         backgroundGradientFrom: '#f90000',

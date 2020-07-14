@@ -5,6 +5,7 @@ import ChartScreen from './src/screen/ChartScreen';
 import LoadingScreen from './src/screen/LoadingScreen.js'
 import ComparatorScreen from './src/screen/ComparatorScreen';
 import ChartCompareScreen from './src/screen/ChartCompareScreen';
+import NewCases from './src/screen/NewCases';
 
 
 const Rotas = () => {
@@ -16,6 +17,7 @@ const Rotas = () => {
         <Scene key='loading' component={LoadingScreen} title='COVID-19' />
         <Scene key='comparator' component={ComparatorScreen} title='COVID-19' />
         <Scene key='chartcomparator' component={ChartCompareScreen} title='COVID-19' />
+        <Scene key='casosdiarios' component={NewCases} title='COVID-19' />
       </Scene>
     </Router>
   );

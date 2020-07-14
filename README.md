@@ -11,4 +11,8 @@
   <li>Verifcar situação global da pandemia no mês atual.</li>
 </ul>
 
+plataforma IOS:
+
+<img src="https://user-images.githubusercontent.com/11637810/87428819-cfea4280-c5da-11ea-916d-b8f2e3a6a405.jpg"  width="500" height="600">
+
 
